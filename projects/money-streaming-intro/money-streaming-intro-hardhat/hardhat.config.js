@@ -1,9 +1,10 @@
 require("dotenv").config()
-
+require('@typechain/hardhat')
 require("@nomiclabs/hardhat-etherscan")
 require("@nomiclabs/hardhat-ethers")
 require("hardhat-gas-reporter")
 require("solidity-coverage")
+require('hardhat-deploy')
 
 task("accounts", "Prints the list of accounts", async (_, hre) => {
     const accounts = await hre.ethers.getSigners()
@@ -18,14 +19,17 @@ module.exports = {
     networks: {
         hardhat: {
             blockGasLimit: 100000000
+        },
+        goerli: {
+            url: process.env.GOERLI_URL || "",
+            accounts:
+                process.env.PRIVATE_KEY !== undefined
+                    ? [process.env.PRIVATE_KEY]
+                    : []
         }
-        // goerli: {
-        //     url: process.env.GOERLI_URL || "",
-        //     accounts:
-        //         process.env.PRIVATE_KEY !== undefined
-        //             ? [process.env.PRIVATE_KEY]
-        //             : []
-        // }
+    },
+    namedAccounts: {
+        deployer: 0,
     },
     gasReporter: {
         enabled: process.env.REPORT_GAS !== undefined,

@@ -5,21 +5,27 @@
         "build": "hardhat compile"
     },
     "devDependencies": {
-        "@nomiclabs/hardhat-ethers": "^2.0.6",
+        "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@0.3.0-beta.13",
         "@nomiclabs/hardhat-etherscan": "^3.0.4",
         "@nomiclabs/hardhat-waffle": "^2.0.3",
+        "@superfluid-finance/sdk-core": "^0.4.4",
+        "@typechain/ethers-v5": "^10.1.1",
+        "@typechain/hardhat": "^6.1.4",
         "chai": "^4.3.6",
         "dotenv": "^16.0.1",
         "ethereum-waffle": "^3.4.4",
-        "ethers": "^5.6.8",
+        "ethers": "^5.7.2",
+        "graphql": "^16.5.0",
         "hardhat": "^2.9.7",
+        "hardhat-deploy": "^0.11.20",
         "hardhat-gas-reporter": "^1.0.8",
         "solhint": "^3.3.7",
         "solidity-coverage": "^0.7.21",
-        "@superfluid-finance/sdk-core": "^0.4.4",
-        "graphql": "^16.5.0"
+        "typechain": "^8.1.1"
     },
     "dependencies": {
-        "@superfluid-finance/ethereum-contracts": "^1.4.3"
+        "@openzeppelin/contracts": "^4.8.0",
+        "@superfluid-finance/ethereum-contracts": "^1.4.3",
+        "writefile": "^0.2.8"
     }
 }

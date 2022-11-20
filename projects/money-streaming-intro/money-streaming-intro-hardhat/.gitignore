@@ -1,0 +1,2 @@
+# Created from typechain ( npx hardhat compile)
+typechain-types/*
