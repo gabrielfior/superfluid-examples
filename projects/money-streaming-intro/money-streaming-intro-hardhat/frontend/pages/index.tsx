@@ -1,15 +1,9 @@
 /* eslint-disable no-unused-vars */
 import Head from 'next/head'
-import Image from 'next/image'
 import { useAccount, useProvider } from 'wagmi';
 import styles from '../styles/Home.module.css';
-import { MoneyRouter } from '../../typechain-types/contracts/MoneyRouter';
-import { ethers } from "ethers";
 import { NextPage } from 'next';
-import MoneyStreamerInteraction from '../components/MoneyStreamerInteraction';
-
-//import { useAccount, useConnect, useDisconnect } from 'wagmi'
-//import { InjectedConnector } from 'wagmi/connectors/injected'
+import MoneyStreamerFlows from '../components/MoneyStreamerFlows';
 
 const Home: NextPage = () => {
   const { address, isConnecting, isDisconnected, isConnected } = useAccount();
@@ -26,9 +20,7 @@ const Home: NextPage = () => {
 
       {isConnected &&
         <>
-          <h1>Connected</h1>
-          <br />
-          <MoneyStreamerInteraction />
+          <MoneyStreamerFlows />
         </>
       }
 
@@ -36,23 +28,6 @@ const Home: NextPage = () => {
         <h1>Disconnected</h1>
       }
 
-
-
-      {/*isConnected &&
-
-        <>
-          <Input placeholder="default size" prefix={<UserOutlined />} value={recipient} onChange={(e) => setRecipient(e.target.value)} />
-          <InputNumber addonBefore="Wei per sec" min={1} value={amountWeiPerSec} onChange={(value) => setAmountWeiPerSec(value ?? 0)} />
-          <Divider />
-
-          <Button shape='round' type="primary" onClick={createFlow}>Create flow</Button>
-          <Button shape='round' type="primary" onClick={deleteFlow}>Delete flow</Button>
-          <Button shape='round' type="primary" onClick={updateFlow}>Update flow</Button>
-          <Button shape='round' type="primary" onClick={fetchStreams}>Update streams</Button>
-
-          <Table columns={columns} dataSource={streams} />
-
-  </>*/}
 
     </div>
   )

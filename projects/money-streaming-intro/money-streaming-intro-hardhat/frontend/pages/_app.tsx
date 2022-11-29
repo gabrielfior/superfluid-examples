@@ -1,5 +1,4 @@
 import '../styles/globals.css'
-//import 'antd/dist/antd.css';
 import type { AppProps } from 'next/app';
 import { WagmiConfig, createClient, chain } from "wagmi";
 import { ConnectKitProvider, ConnectKitButton, getDefaultClient } from "connectkit";

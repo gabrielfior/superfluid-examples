@@ -12,7 +12,7 @@ specifiers:
   chai: ^4.3.6
   dotenv: ^16.0.1
   ethereum-waffle: ^3.4.4
-  ethers: ^5.7.2
+  ethers: ^5.6.8
   graphql: ^16.5.0
   hardhat: ^2.9.7
   hardhat-deploy: ^0.11.20

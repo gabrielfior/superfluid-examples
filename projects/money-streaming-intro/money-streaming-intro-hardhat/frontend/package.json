@@ -6,9 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "export": "next build && next export -o dist",
+    "deploy": "npm run export && npx surge dist"
   },
   "dependencies": {
+    "@ethersproject/providers": "^5.7.2",
+    "@typechain/ethers-v5": "^10.1.1",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.9",
