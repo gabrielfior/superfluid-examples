@@ -33,6 +33,14 @@ export default function MoneyStreamerFlows() {
         }
     }
 
+    const revoke = async () => {
+        // We approve the contract to fully control our streams, simply because we want to only ask for user allowance once.
+        if (approved) {
+            await daiXContract?.revokeFlowOperatorWithFullControl({ flowOperator: f.address }).exec(signer!);
+            await updateApproved();   
+        }
+    }
+
     const updateApproved = async () => {
         console.log('add', address, 'contract', moneyRouterContract);
         const currPermissions = await daiXContract?.getFlowOperatorData({
@@ -104,7 +112,7 @@ export default function MoneyStreamerFlows() {
     };
 
     const createFlowIntoContract = async () => {
-        const tx = await moneyRouterContract?.createFlowIntoContract(daiXContract?.address!,
+        const tx = await moneyRouterContract?.connect(signer).createFlowIntoContract(daiXContract?.address!,
             amountWeiPerSecIn.toString(), { gasLimit: ethers.BigNumber.from("800000") });
         await toast.promise(tx?.wait()!, {
             loading: 'Creating flow',
@@ -119,7 +127,7 @@ export default function MoneyStreamerFlows() {
             toast.error('No existing flow to update');
             return;
         }
-        const tx = await moneyRouterContract?.updateFlowIntoContract(daiXContract?.address!, amountWeiPerSecIn.toString(), { gasLimit: ethers.BigNumber.from("800000") });
+        const tx = await moneyRouterContract?.connect(signer).updateFlowIntoContract(daiXContract?.address!, amountWeiPerSecIn.toString(), { gasLimit: ethers.BigNumber.from("800000") });
         await toast.promise(tx?.wait()!,
             {
                 loading: 'Executing transaction',
@@ -132,7 +140,7 @@ export default function MoneyStreamerFlows() {
     const deleteFlowIntoContract = async () => {
 
         if (isFlowActive()) {
-            const tx = await moneyRouterContract?.deleteFlowIntoContract(daiXContract?.address!, { gasLimit: ethers.BigNumber.from("800000") });
+            const tx = await moneyRouterContract?.connect(signer).deleteFlowIntoContract(daiXContract?.address!, { gasLimit: ethers.BigNumber.from("800000") });
             await toast.promise(tx?.wait()!,
                 {
                     loading: 'Executing transaction',
@@ -171,7 +179,7 @@ export default function MoneyStreamerFlows() {
     const withdrawFromContract = async () => {
         console.log('balance', contractBalance);
         const amount = ethers.utils.parseEther(amountDAITransferOp.toString());
-        const tx = await moneyRouterContract?.withdrawFunds(daiXContract?.address!,
+        const tx = await moneyRouterContract?.connect(signer).withdrawFunds(daiXContract?.address!,
             amount, { gasLimit: ethers.BigNumber.from("800000") });
         await toast.promise(tx?.wait()!, {
             loading: 'Withdrawing funds',
@@ -233,7 +241,6 @@ export default function MoneyStreamerFlows() {
                 success: 'Deleted flow',
                 error: 'Flow could not be deleted'
             });
-        //await fetchIncomingFlowData();
     };
 
     return (
@@ -253,11 +260,12 @@ export default function MoneyStreamerFlows() {
                     <Divider />
 
                     <Button shape='round' type="primary" onClick={approve}>Approve flows</Button>
+                    <Button shape='round' type="primary" onClick={revoke}>Revoke approval</Button>
                     <Button disabled={!approved} shape='round' type="primary" onClick={createFlowIntoContract}>Create flow into contract</Button>
                     <Button disabled={!approved} shape='round' type="primary" onClick={updateFlowIntoContract}>Update flow into contract</Button>
                     <Button disabled={!approved} shape='round' type="primary" onClick={deleteFlowIntoContract}>Delete flow into contract</Button>
 
-                    <h3>Streaming from contract - CHECK IF APPROVE RELEVANT</h3>
+                    <h3>Streaming from contract</h3>
                     <p>Contract balance {contractBalance.toString()} fDAIx</p>
                     <InputNumber addonBefore="Wei per sec" min={1} value={amountWeiPerSecOut} onChange={(value) => setAmountWeiPerSecOut(value ?? 0)} />
                     <Input addonBefore="Recipient" value={recipient} onChange={(e) => setRecipient(e.target.value)} />
